@@ -1,0 +1,28 @@
+<letter xmlns:th="http://www.thymeleaf.org/">
+    <title>
+        <description th:text="${title.description}"/>
+        <theme th:attr="text=${title.theme}"/>
+        <alien_race th:attr="code=${title.code}"/>
+        <created th:text="${#dates.format(title.date, 'YYYY-MM-dd_HH:mm')}"/>
+        <id description="Идентификатор письма" th:attr="value=${title.id}"/>
+        <authors>
+            <employee th:each="employee : ${title.employees}">
+                <name th:text="${employee.name}"/>
+                <second_name th:if="${!#strings.isEmpty(employee.patronymic)}" th:text="${employee.patronymic}"/>
+                <lastname th:text="${employee.surname}"/>
+                <position th:text="${employee.position}"/>
+            </employee>
+        </authors>
+    </title>
+    <message>
+        <paragraph th:each="paragraph : ${message.paragraphs}" th:text="${paragraph}"/>
+        <paragraph>
+            Надеюсь, это поможет Вам. Если у Вас есть какие-либо дополнительные вопросы, пожалуйста, не стесняйтесь спрашивать. С уважением, Земляне!
+        </paragraph>
+    </message>
+    <contacts th:attrappend="value=${#strings.isEmpty(contacts.number) && #strings.isEmpty(contacts.address)} ? 'not found'">
+        <tel th:if="${!#strings.isEmpty(contacts.number)}" th:attr="number=${contacts.number}"/>
+        <address th:if="${!#strings.isEmpty(contacts.address)}" th:attr="description=${contacts.address}"/>
+    </contacts>
+    <sent_time th:text="${#dates.format(sentTime.date, 'YYYY-MM-dd HH:mm')}"/>
+</letter>
